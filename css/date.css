@@ -1,0 +1,81 @@
+*{
+	margin: 0;
+	padding: 0;
+}
+.frame{
+	width: 440px;
+	height: 627px;
+	background-color: #272c3d;
+	margin: 20px auto;
+	box-sizing: border-box;
+	padding: 25px 20px;
+	box-shadow: 2px 2px 3px #000;
+}
+.timestamp{
+	height: 100px;
+}
+.timestamp>.time{
+	font-size: 30px;
+	color: #f1ffff;
+}
+.timestamp>.date{
+	padding: 25px 0;
+	color: #5982ce;
+}
+.timestamp>.date span{
+	margin: 0 6px;
+}
+.operation{
+	height: 100px;
+	color: #f1ffff;
+	font-size: 20px;
+}
+.operation>.top{
+	height: 35px;
+}
+.operation .yearmonth{
+	float: left;
+}
+.operation .flip{
+	margin-right: 30px;
+	float: right;
+}
+.operation .flip>.left{
+	margin-right: 10px;
+}
+.left,.right{
+	cursor: pointer;
+}
+li{
+	list-style: none;
+	cursor: pointer;
+}
+.operation>.week>li{
+	width: 50px;
+	height: 62px;
+	text-align: center;
+	line-height: 65px;
+	float: left;
+}
+.day{
+	width: 350px;
+	height: 372px;
+	color: #f1ffff;
+}
+.day li{
+	width: 50px;
+	height: 62px;
+	font-size: 18px;
+	text-align: center;
+	line-height: 62px;
+	box-sizing: border-box;
+	float: left;
+	
+}
+.checked{		/**被选中的日期**/
+	background-color: #f60;
+	border: 1px solid #fff;
+}
+.not{			/**相邻月份的日期**/
+	color: #777;
+}
