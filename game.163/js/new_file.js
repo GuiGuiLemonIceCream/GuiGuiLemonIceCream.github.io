@@ -113,6 +113,9 @@ $(function(){
 			$(".banner>ul>li").eq(num).css({"border":"3px solid #fff","background":"#f00"});
 			console.log(111)
 		}
+		
+		
+		
 		btn2.onclick = function(){
 			clearInterval(timer);
 			num++;
