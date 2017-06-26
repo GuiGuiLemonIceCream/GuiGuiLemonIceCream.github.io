@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+		<style type="text/css">
+			*{
+				padding: 0;
+				margin: 0;
+			}
+			.warp{
+				width:680px;
+				height:400px;
+				margin: 100px auto;
+				border:1px solid #333;
+				overflow: hidden;
+			}
+			ul {
+				position: relative;
+			}
+			li{
+				list-style: none;
+				width:150px;
+				height:100px;
+				margin: 10px;
+				float:left;
+				z-index: 1;
+			}
+			li img {
+				width:100%;
+				height:100%;
+			}
+			.active{
+				border:3px dashed #000;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="warp">
+			<input type="button" name="btn" id="btn" value="随机" />
+			<ul>
+				<li>
+					<img src="img/6.jpg"/>
+				</li>
+				<li>
+					<img src="img/7.jpg"/>
+				</li>
+				<li>
+					<img src="img/8.jpg"/>
+				</li>
+				<li>
+					<img src="img/9.jpg"/>
+				</li>
+				<li>
+					<img src="img/6.jpg"/>
+				</li>
+				<li>
+					<img src="img/7.jpg"/>
+				</li>
+				<li>
+					<img src="img/8.jpg"/>
+				</li>
+				<li>
+					<img src="img/9.jpg"/>
+				</li>
+				<li>
+					<img src="img/6.jpg"/>
+				</li>
+				<li>
+					<img src="img/7.jpg"/>
+				</li>
+				<li>
+					<img src="img/8.jpg"/>
+				</li>
+				<li>
+					<img src="img/9.jpg"/>
+				</li>
+			</ul>
+		</div>
+		<script type="text/javascript">
+			var btn = document.getElementById('btn');
+			var lis = document.getElementsByTagName('li');
+			var arr = [];
+			var Zindex = 1;
+			
+			
+			for(var i=0;i<lis.length;i++){
+				arr[i] = {
+					top:lis[i].offsetTop,
+					left:lis[i].offsetLeft
+				}
+			}
+			//布局转换
+			for(var i=0;i<lis.length;i++){
+				lis[i].style.position = 'absolute';
+				lis[i].style.left = arr[i].left + 'px';
+				lis[i].style.top = arr[i].top + 'px';
+				lis[i].style.margin = 0;
+				lis[i].dataset.index = i;
+				darg(lis[i]);
+			}
+			
+			btn.onclick = function(){
+				arr.sort(function(){
+					return Math.random() - 0.5;
+				});
+				
+				for(var i=0;i<lis.length;i++){
+					lis[i].style.left = arr[i].left + 'px';
+					lis[i].style.top = arr[i].top + 'px';
+					lis[i].style.transition = '0.5s';
+					lis[i].dataset.index = i;
+				}
+			}
+			
+			function darg(obj){
+				
+				obj.onmousedown = function(e){
+					for(var i=0;i<lis.length;i++){
+						lis[i].style.transition = null;
+					}
+					
+					var minObj = null;
+					Zindex++;
+					obj.style.zIndex = Zindex;
+					var y = e.pageY - obj.offsetTop;
+					var x = e.pageX - obj.offsetLeft;
+					
+					document.onmousemove = function(e){
+						var emptyArr = [];
+						var lengthArr = [];
+						obj.style.left = e.pageX - x + 'px';
+						obj.style.top = e.pageY - y + 'px';
+						for(var i=0;i<arr.length;i++){
+							if(obj == lis[i]){
+								continue;
+							}
+							if(boom(obj,lis[i])){
+								emptyArr.push(lis[i]);
+							}
+						}
+						for(var i=0;i<emptyArr.length;i++){
+							var a = obj.getBoundingClientRect().top - emptyArr[i].getBoundingClientRect().top;
+							var b = obj.getBoundingClientRect().left - emptyArr[i].getBoundingClientRect().left;
+							var c = Math.sqrt(a*a + b*b);
+							lengthArr.push(c);
+						}
+						
+						var min = Infinity;
+						for(var i=0;i<lengthArr.length;i++){
+							if(min>lengthArr[i]){
+								min = lengthArr[i];
+								minObj = emptyArr[i];
+							}
+						}
+						console.log(minObj)
+						for(var i=0;i<lis.length;i++){
+							lis[i].className = '';
+						}
+						if(minObj){
+							minObj.className = 'active';
+						}
+						
+					}
+					
+					
+					document.onmouseup = function(){
+						//obj
+						if(minObj){
+							var i = obj.dataset.index;
+							obj.dataset.index = minObj.dataset.index;
+							minObj.dataset.index = i;
+							
+							obj.style.transition = '0.5s';
+							obj.style.top = arr[obj.dataset.index].top + 'px';
+							obj.style.left = arr[obj.dataset.index].left + 'px';
+							
+							minObj.style.transition = '0.5s';
+							minObj.style.top = arr[i].top + 'px';
+							minObj.style.left = arr[i].left + 'px';
+							
+							minObj.className = '';
+						}else{
+							obj.style.transition = '0.5s';
+							obj.style.top = arr[obj.dataset.index].top + 'px';
+							obj.style.left = arr[obj.dataset.index].left + 'px';
+						}
+						
+						
+						document.onmousemove = null;
+						document.onmouseup = null;
+					}
+					
+					e.preventDefault();
+				}
+				
+				
+			}
+			
+			function boom(obj,obj1){
+				var to = obj.getBoundingClientRect();
+				var to1 = obj1.getBoundingClientRect();
+				
+				var r = to.right;
+				var l = to.left;
+				var t = to.top;
+				var b = to.bottom;
+				
+				var r1 = to1.right;
+				var l1 = to1.left;
+				var t1 = to1.top;
+				var b1 = to1.bottom;
+				
+				if(r>=l1&&t<=b1&&l<=r1&&b>=t1){
+					return true;
+				}else{
+					return false;
+				}
+			}
+		</script>
+	</body>
+</html>

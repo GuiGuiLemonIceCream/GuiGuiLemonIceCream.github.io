@@ -1,5 +1,4 @@
 $(function(){
-//	$(".list_content").css("height","875px");
 	list();
 	pic();
 	more();
@@ -53,8 +52,6 @@ $(function(){
 			$(this).css("color","");
 		});
 	}
-	
-	
 	function pic(){
 		var spic = ["url(img/pic_pic2.jpg)","url(img/pic_pic5.jpg)","url(img/pic_pic3.jpg)","url(img/pic_pic1.jpg)","url(img/pic_pic4.jpg)"];
 		var li = document.querySelectorAll(".pic>li");
@@ -94,7 +91,7 @@ $(function(){
 		var lis = document.querySelectorAll(".banner>ul>li");
 		var timer = null;
 		var num = 0;
-		ban.style.transition = "1s";
+		ban.style.transition = ".6s";
 		ban.style.background = bpic[num];
 		lis[num].style.border = "3px solid #fff";
 		lis[num].style.background = "#f00";
@@ -111,11 +108,7 @@ $(function(){
 			timer = setInterval(picmove,4000);
 			$(".banner>ul>li").css({"border":"","background":""})
 			$(".banner>ul>li").eq(num).css({"border":"3px solid #fff","background":"#f00"});
-			console.log(111)
 		}
-		
-		
-		
 		btn2.onclick = function(){
 			clearInterval(timer);
 			num++;
@@ -150,7 +143,7 @@ $(function(){
 			$(".banner>ul>li").eq(num).css({"border":"3px solid #fff","background":"#f00"});
 		}
 	}
-	function botgame(){	
+	function botgame(){
 		var txt = {
 			tit1:[
 				{one:"镇魔曲手游",two:"“原汁原味”的MMO乐趣，满足你对顶级MMO的所有幻想。",three:"img/11.jpg",four:"url(img/1.png)"},
@@ -200,24 +193,6 @@ $(function(){
 				}
 			
 			},700)
-			console.log(num)
-			
-//			if (num==1) {
-//				$(".hotgame_pic>i").each(function(i){
-//					$(".explain").eq(i).html(txt.tit2[i].one);
-//					$(".explain_txt").eq(i).html(txt.tit2[i].two);
-//					$(".hotgame_pic>i").eq(i).css("background",txt.tit2[i].four);
-//					$(".hotgame_pic>img").eq(i).attr("src",txt.tit2[i].three);
-//				})
-//			} else{
-//				$(".hotgame_pic>i").each(function(i){
-//					$(".explain").eq(i).html(txt.tit1[i].one);
-//					$(".explain_txt").eq(i).html(txt.tit1[i].two);
-//					$(".hotgame_pic>i").eq(i).css("background",txt.tit1[i].four);
-//					$(".hotgame_pic>img").eq(i).attr("src",txt.tit1[i].three);
-//				})
-//				num=0;
-//			}
 		}
 	}
 })

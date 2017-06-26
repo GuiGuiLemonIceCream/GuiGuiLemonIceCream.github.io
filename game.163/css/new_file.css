@@ -1,15 +1,21 @@
+body{
+	width: 100%;
+	height: 100%;
+}
 header{
-	width: 1583px;
+	min-width: 1260px;
+    max-width: 1920px;
 	height: 950px;
 	margin: 0 auto;
 	position: relative;
 }
 header>.banner{
 	display: block;
-	width: 1260px;
+	min-width: 1260px;
 	height: 500px;
 	top: 100px;
-	left: 161.5px;
+	left: 50%;
+	margin-left: -630px;
 	position: absolute;
 }
 header>.banner>ul{
@@ -304,7 +310,8 @@ header>.bottom{
 	height: 350px;
 	background-color: #282b2d;
 	bottom: 0;
-	left: 162px;
+	left: 50%;
+	margin-left: -630px;
 }
 header>.bottom>.pic{
 	float: left;
@@ -428,7 +435,8 @@ header>.bottom>.pic_list>.pic_list_top{
 	top: 0;
 }
 section{
-	width: 1583px;
+	/*width: 1583px;*/
+	min-width: 1260px;
 	height: 100%;
 	background-color: #f6f7fb;
 	margin: 0 auto;
@@ -653,8 +661,9 @@ section>.games>aside>ul>li>a>.tiao{
     background: url(../img/gt_64d61b9.png);
 }
 .bottom_list{
-	width: 1583px;
+	/*width: 1583px;*/
 	/*height: 895px;*/
+	min-width: 1260px;
 	height: 460px;
 	margin: 0 auto;
 	overflow: hidden;
@@ -740,7 +749,8 @@ section>.games>aside>ul>li>a>.tiao{
 	background: url(../img/topBar_1_z_e7632fe.png) -56px -34px;
 }
 .more{
-	width: 1583px;
+	/*width: 1583px;*/
+	min-width: 1260px;
 	height: 155px;
 	margin: 0 auto;
 	position: relative;
@@ -783,7 +793,8 @@ section>.games>aside>ul>li>a>.tiao{
 	background: url(../img/topBar_1_z_e7632fe.png) -56px -34px;
 }
 .help{
-	width: 1583px;
+	/*width: 1583px;*/
+	min-width: 1260px;
 	height: 334px;
 	margin: 0 auto;
 	background-color: #f6f7fb;
@@ -887,7 +898,8 @@ section>.games>aside>ul>li>a>.tiao{
     color: #909090;
 }
 footer{
-	width: 1583px;
+	/*width: 1583px;*/
+	min-width: 1260px;
 	height: 107px;
 	margin: 0 auto;
 	padding: 20px 0;
@@ -951,4 +963,15 @@ footer>.foot_bottom{
 }
 footer a:hover{
 	text-decoration: underline;
+}
+
+
+
+@media screen and (max-width: 1400px) {
+	.left{
+		display: none;
+	}
+	.right{
+		display: none;
+	}
 }

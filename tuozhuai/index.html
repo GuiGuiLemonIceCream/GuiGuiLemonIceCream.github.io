@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+		<style type="text/css">
+			*{
+				margin: 0;
+				padding: 0;
+			}
+			.box{
+				width: 700px;
+				height: 700px;
+				border: 2px dashed #000;
+				margin: 0 auto;
+				position: relative;
+				overflow: hidden;
+			}
+			li{
+				list-style: none;
+				width: 200px;
+				height: 200px;
+				box-sizing: border-box;
+				background-color: #eee;
+				position: absolute;
+				transition: .5s;
+				z-index: 1;
+			}
+			li{
+				text-align: center;
+				line-height: 200px;
+				font-size: 50px;
+			}
+			button{
+				position: absolute;
+				top: 5%;
+				left: 10%;
+			}
+			.get{
+				border: 1px dashed #000;
+			}
+		</style>
+	</head>
+	<body>
+		<ul class="box">
+		</ul>
+		<button>随机打乱</button>
+		<script type="text/javascript">
+			var ul = document.getElementsByClassName("box")[0];
+			var btn = document.getElementsByTagName("button")[0];
+			var k = -200;
+			var star = [];
+			var BOX = null;
+			for (var i = 0;i<9;i++) {//利用算法生成盒子（定位）
+				if (i%3==0) {
+					k+=225;
+				}
+				ul.innerHTML += "<li style='left:"+k+"px;top:"+((i%3)*225+25)+"px'><img src='img/"+(i+1)+".jpg'/></li>";
+			}
+			var li = document.getElementsByTagName("li");
+			for(var i=0;i<li.length;i++){
+				star[i] = {//生成的过程中用数组保存left和top值
+					top:li[i].offsetTop,
+					left:li[i].offsetLeft
+				}
+			}
+			for (var i = 0;i<li.length;i++) {
+				li[i].style.left = star[i].left + 'px';
+				li[i].style.top = star[i].top + 'px';
+				li[i].dataset.index = i;
+			}
+			btn.onclick = function(){//打乱盒子的排列顺序
+				star.sort(function(){//利用所保存的将其顺序打乱
+					return Math.random() -0.5;
+				})
+				for (var i = 0;i<li.length;i++) {//将打乱的坐标重新给予盒子
+					li[i].style.left = star[i].left + "px";
+					li[i].style.top = star[i].top + "px";
+					li[i].dataset.index = i;
+				}
+			}
+			for (var i = 0;i<li.length;i++) {//点击当前盒子并让它实现移动，触碰其他盒子并交换的功能
+				li[i].onmousedown = function(ev){
+					//获取鼠标点击在盒子的坐标并算出点击位置距离点击盒子的左边框与上边框
+					var x = ev.pageX - this.offsetLeft;
+					var y = ev.pageY - this.offsetTop;
+					var that = this;
+					for (var j = 0;j<li.length;j++) {
+						li[j].style.transition = "0s";//防止拖动时拥有过渡时间影响拖拽效果
+					}
+					that.style.zIndex = 99;//让点击的那个盒子层级提高
+					ev.preventDefault();//阻止冒泡
+					document.onmousemove = function(ev){
+						//让盒子更随鼠标移动，移动时重新赋予盒子新的坐标
+						that.style.left = ev.pageX - x + "px";
+						that.style.top = ev.pageY - y + "px";
+						diff(that);
+						for (var i = 0;i<li.length;i++) {
+							li[i].className = "";//清除所有盒子边框
+						}
+						if (BOX) {//假如存在触碰的距离最接近的盒子就给予边框
+							BOX.className = "get";
+						}
+					}
+					document.onmouseup = function(){
+						if (BOX) {//假如存在触碰的距离最接近的盒子就存它的坐标
+							var q = that.dataset.index;
+							that.dataset.index = BOX.dataset.index;
+							BOX.dataset.index = q;
+							that.style.top = star[that.dataset.index].top + 'px';
+							that.style.left = star[that.dataset.index].left + 'px';
+							BOX.style.top = star[q].top + 'px';
+							BOX.style.left = star[q].left + 'px';
+							BOX = null;
+						} else {//假如不存在触碰的距离最接近的盒子就使点击的盒子回归原来的坐标
+							that.style.left = star[that.dataset.index].left + "px";
+							that.style.top = star[that.dataset.index].top + "px";
+						}
+						for (var i = 0;i<li.length;i++) {
+							li[i].className = "";
+						}
+						that.style.zIndex = 1;
+						for (var j = 0;j<li.length;j++) {
+							li[j].style.transition = "0.5s";
+						}
+						//清空随鼠标移动与鼠标向上事件
+						document.onmousemove = null;
+						document.onmouseup = null;
+					}
+				}
+			}
+			function diff(that){
+				var arr1 = [];
+				var arr2 = [];
+				for (var k = 0;k<li.length;k++) {
+					if (li[k]!=that) {//获取点击的盒子以外的其他盒子
+						if (crash(that,li[k])) {//在其他盒子中判断找出触碰到的盒子并添加到一个空数组中
+							arr1.push(li[k]);
+						}
+					}
+				}
+				for (var i = 0;i<arr1.length;i++) {//求各个触碰盒子与点击盒子左上角的距离
+					var y = Math.pow((that.offsetTop-arr1[i].offsetTop),2);
+					var x = Math.pow((that.offsetLeft-arr1[i].offsetLeft),2);
+					var C = x+y;
+					arr2.push(C)	
+				}
+				var min = Infinity;
+				if (arr2.length!=0) {//各个触碰盒子与点击盒子左上角的距离中选出最小值并用变量保存
+					for (var i = 0;i<arr2.length;i++) {
+						if (min>arr2[i]) {
+							min = arr2[i];
+							BOX = arr1[i];
+						}
+					}
+				} else {
+					BOX = null;
+				}
+			}
+			function crash(a,b){//获取并比较点击的盒子与其他的盒子是否触碰
+				var mark1 = a.getBoundingClientRect();
+				var l1 = mark1.left;
+				var t1 = mark1.top;
+				var r1 = mark1.right;
+				var b1 = mark1.bottom;
+				var mark2 = b.getBoundingClientRect();
+				var l2 = mark2.left;
+				var t2 = mark2.top;
+				var r2 = mark2.right;
+				var b2 = mark2.bottom;
+				if (r1>=l2&&b1>=t2&&l1<=r2&&t1<=b2) {
+					return true;
+				} else {
+					return false;
+				}
+			}
+		</script>
+	</body>
+</html>
